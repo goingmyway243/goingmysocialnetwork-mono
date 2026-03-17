@@ -4,7 +4,9 @@ namespace SocialNetworkMicroservices.Identity.Services;
 
 public interface IUserService
 {
-    TestUser? ValidateCredentials(string username, string password);
-    TestUser? GetUserByUsername(string username);
-    IEnumerable<TestUser> GetAllTestUsers();
+    Task<ApplicationUser?> ValidateCredentialsAsync(string username, string password);
+    Task<ApplicationUser?> GetUserByUsernameAsync(string username);
+    Task<ApplicationUser?> GetUserByIdAsync(string userId);
+    Task<ApplicationUser> CreateUserAsync(string username, string password, string email, string firstName, string lastName, List<string> roles);
+    Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
 }

@@ -1,5 +1,5 @@
-/* Login container */
-.login-container {
+/* Signup container */
+.signup-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -56,7 +56,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 450px;
+  max-width: 500px;
   padding: 2rem 3rem;
   animation: cardFadeIn 0.6s ease-out;
 }
@@ -76,7 +76,7 @@
 /* Card header */
 .card-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .title {
@@ -93,11 +93,29 @@
   margin: 0;
 }
 
+/* Error banner */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 12px;
+  color: #ff6b6b;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.error-banner i {
+  font-size: 1.25rem;
+}
+
 /* Form */
-.login-form {
+.signup-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .form-group {
@@ -155,16 +173,10 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Form options */
-.form-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+/* Checkbox wrapper */
 .checkbox-wrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
 }
 
@@ -172,21 +184,23 @@
 .checkbox-wrapper .custom-checkbox {
   width: 1.25rem;
   height: 1.25rem;
+  margin-top: 0.125rem;
 }
 
 .checkbox-text {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
 }
 
-.forgot-link {
-  font-size: 1rem;
+.checkbox-text .link {
   color: white;
+  font-weight: 600;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
 
-.forgot-link:hover {
+.checkbox-text .link:hover {
   opacity: 0.8;
   text-decoration: underline;
 }
@@ -199,18 +213,18 @@
 
 /* Card footer */
 .card-footer {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   text-align: center;
-  padding-top: 2rem;
+  padding-top: 1.5rem;
   border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.signup-text {
+.login-text {
   font-size: 1.1rem;
   color: white;
 }
 
-.signup-link {
+.login-link {
   color: white;
   font-weight: 600;
   text-decoration: none;
@@ -219,28 +233,35 @@
   cursor: pointer;
 }
 
-.signup-link:hover {
+.login-link:hover {
   opacity: 0.8;
   text-decoration: underline;
 }
 
 /* Responsive design */
 @media (max-width: 640px) {
-  .login-container {
+  .signup-container {
     padding: 1rem;
   }
 
   .glass-card {
     padding: 2rem 1.5rem;
+    max-width: 100%;
   }
 
   .title {
     font-size: 2rem;
   }
 
-  .form-options {
-    flex-direction: column;
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .signup-form {
     gap: 1rem;
-    align-items: flex-start;
+  }
+
+  .checkbox-text {
+    font-size: 0.875rem;
   }
 }

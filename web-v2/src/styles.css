@@ -1,6 +1,20 @@
 /* PrimeNG Theme */
 @import "primeicons/primeicons.css";
 
+/* Dark theme variables for PrimeNG */
+:root {
+  --primary-color: #60a5fa;
+  --primary-color-text: #ffffff;
+  --surface-ground: #0f172a;
+  --surface-section: rgba(255, 255, 255, 0.05);
+  --surface-card: rgba(255, 255, 255, 0.08);
+  --surface-overlay: rgba(30, 30, 46, 0.95);
+  --surface-border: rgba(255, 255, 255, 0.1);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --text-color: #ffffff;
+  --text-color-secondary: rgba(255, 255, 255, 0.6);
+}
+
 /* Global Styles */
 
 * {

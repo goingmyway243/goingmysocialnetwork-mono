@@ -7,7 +7,7 @@ using SocialNetworkMicroservices.Identity.Services;
 using System.Security.Claims;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace SocialNetworkMicroservices.Identity;
+namespace SocialNetworkMicroservices.Identity.Controllers;
 
 public class AuthorizationController : ControllerBase
 {
@@ -47,7 +47,7 @@ public class AuthorizationController : ControllerBase
         }
 
         // Validate the username/password
-        var user = _userService.ValidateCredentials(username, password);
+        var user = await _userService.ValidateCredentialsAsync(username, password);
         if (user == null)
         {
             return BadRequest(new OpenIddictResponse
@@ -94,7 +94,7 @@ public class AuthorizationController : ControllerBase
         if (request.IsPasswordGrantType())
         {
             // Validate the username/password using the user service
-            var user = _userService.ValidateCredentials(request.Username ?? "", request.Password ?? "");
+            var user = await _userService.ValidateCredentialsAsync(request.Username ?? "", request.Password ?? "");
             if (user == null)
             {
                 return BadRequest(new OpenIddictResponse
@@ -237,9 +237,14 @@ public class AuthorizationController : ControllerBase
     {
         var resources = new List<string>();
 
-        if (scopes.Contains("admin") || scopes.Contains("profile") || scopes.Contains("email"))
+        if (scopes.Contains("openid") || scopes.Contains("profile") || scopes.Contains("email"))
         {
             resources.Add("identity-server");
+        }
+
+        if (scopes.Contains("post_api"))
+        {
+            resources.Add("post_api");
         }
 
         return await Task.FromResult(resources);

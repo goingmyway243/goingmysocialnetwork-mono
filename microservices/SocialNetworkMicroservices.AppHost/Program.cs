@@ -14,6 +14,8 @@ var identityService = builder.AddProject<Projects.SocialNetworkMicroservices_Ide
 
 builder.AddProject<Projects.SocialNetworkMicroservices_Post>("post")
     .WithReference(identityService)
-    .WithReference(database);
+    .WithReference(database)
+    .WaitFor(identityService)
+    .WithEnvironment("OpenIddict:Issuer", identityService.GetEndpoint("https"));
 
 builder.Build().Run();

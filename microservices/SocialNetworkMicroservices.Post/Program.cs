@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi;
 using OpenIddict.Validation.AspNetCore;
-using SocialNetworkMicroservices.Post.Extensions;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,12 +39,21 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddOpenIddict()
     .AddValidation(options =>
     {
-        options.SetIssuer(builder.Configuration.GetServiceUri("identity")!);
+        options.SetIssuer(builder.Configuration["OpenIddict:Issuer"]!);
         options.AddAudiences("post_api");
-
         options.UseSystemNetHttp();
         options.UseAspNetCore();
     });
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
 builder.Services.AddAuthorization();
@@ -68,6 +76,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

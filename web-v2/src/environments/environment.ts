@@ -1,8 +1,7 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7119/api',
   authConfig: {
-    issuer: 'https://localhost:7119/',
+    issuer: 'https://localhost:7001/',
     clientId: 'web-client',
     redirectUri: window.location.origin + '/signin-oidc',
     postLogoutRedirectUri: window.location.origin + '/',

@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -20,7 +21,8 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -38,6 +40,10 @@ export class LoginComponent {
     const { username, password } = this.loginForm.value;
     this.isLoading.set(true);
     this.authService.login(username, password);
+  }
+
+  navigateToSignup(): void {
+    this.router.navigate(['/signup']);
   }
 
   get username() {

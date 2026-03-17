@@ -49,11 +49,13 @@ public static class OpenIddictSeeder
                     Permissions.Endpoints.Logout,
                     Permissions.GrantTypes.AuthorizationCode,
                     Permissions.GrantTypes.RefreshToken,
+                    Permissions.GrantTypes.Password,
                     Permissions.ResponseTypes.Code,
                     Permissions.Prefixes.Scope + "email",
                     Permissions.Prefixes.Scope + "profile",
                     Permissions.Prefixes.Scope + "roles",
-                    Permissions.Prefixes.Scope + "openid"
+                    Permissions.Prefixes.Scope + "openid",
+                    Permissions.Prefixes.Scope + "post_api"
                 },
                 RedirectUris =
                 {
@@ -117,7 +119,8 @@ public static class OpenIddictSeeder
                     Permissions.Prefixes.Scope + "email",
                     Permissions.Prefixes.Scope + "profile",
                     Permissions.Prefixes.Scope + "roles",
-                    Permissions.Prefixes.Scope + "admin"
+                    Permissions.Prefixes.Scope + "admin",
+                    Permissions.Prefixes.Scope + "post_api"
                 }
             });
         }

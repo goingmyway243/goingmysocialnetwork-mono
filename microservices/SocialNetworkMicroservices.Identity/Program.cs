@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
-using SocialNetworkMicroservices.Identity;
 using SocialNetworkMicroservices.Identity.Data;
 using SocialNetworkMicroservices.Identity.Services;
 
@@ -32,7 +31,7 @@ builder.Services.AddSwaggerGen(options =>
                 TokenUrl = new Uri("/connect/token", UriKind.Relative),
                 Scopes = new Dictionary<string, string>
                 {
-                    { "admin", "Access to admin features" }
+                    { "openid", "Access to admin features" }
                 }
             }
         }
@@ -66,6 +65,15 @@ builder.Services.AddOpenIddict()
     })
     .AddServer(options =>
     {
+        // Set the issuer
+        options.SetIssuer(new Uri(builder.Configuration["OpenIddict:Issuer"] ?? "https://localhost:7001"));
+
+        // Configure OpenIddict server options
+        /*var encryptionKey = builder.Configuration["OpenIddict:Key"] ?? throw new Exception("OpenIddict key is not configured.");
+        options.AddEncryptionKey(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(encryptionKey)));*/
+        options.SetAccessTokenLifetime(TimeSpan.FromMinutes(int.Parse(builder.Configuration["OpenIddict:AccessTokenLifetime"]!)));
+        options.SetRefreshTokenLifetime(TimeSpan.FromMinutes(int.Parse(builder.Configuration["OpenIddict:RefreshTokenLifetime"]!)));
+
         // Enable the token endpoint
         options.SetTokenEndpointUris("/connect/token");
         options.SetAuthorizationEndpointUris("/connect/authorize");
@@ -86,6 +94,8 @@ builder.Services.AddOpenIddict()
                .EnableTokenEndpointPassthrough()
                .EnableAuthorizationEndpointPassthrough()
                .EnableUserinfoEndpointPassthrough();
+
+        options.DisableAccessTokenEncryption();
     })
     .AddValidation(options =>
     {
@@ -96,8 +106,8 @@ builder.Services.AddOpenIddict()
 builder.Services.AddControllers();
 
 // Register services
-builder.Services.AddSingleton<IUserService, TestUserService>();
-builder.Services.AddHttpClient();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Build the app
 var app = builder.Build();
@@ -108,6 +118,7 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.EnsureCreated();
     await OpenIddictSeeder.SeedAsync(scope.ServiceProvider);
+    await UserSeeder.SeedUsersAsync(scope.ServiceProvider);
 }
 
 // Configure the HTTP request pipeline.
