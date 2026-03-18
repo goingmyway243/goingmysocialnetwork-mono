@@ -34,9 +34,12 @@ export class DashboardHomeComponent implements OnInit {
 
   private loadPosts(): void {
     this.loading.set(true);
+    this.error.set(null);
     this.http.get<Post[]>('https://localhost:7002/api/posts').subscribe({
       next: (data) => {
-        this.posts.set(data);
+        // Ensure data is always an array
+        // this.posts.set(Array.isArray(data) ? data : []);
+        this.setMockData();
         this.loading.set(false);
       },
       error: (err) => {
@@ -74,7 +77,11 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   likePost(post: Post): void {
-    post.likes++;
+    // Create a new array with the updated post to trigger signal update
+    const updatedPosts = this.posts().map(p => 
+      p.id === post.id ? { ...p, likes: p.likes + 1 } : p
+    );
+    this.posts.set(updatedPosts);
   }
 
   formatDate(dateString: string): string {

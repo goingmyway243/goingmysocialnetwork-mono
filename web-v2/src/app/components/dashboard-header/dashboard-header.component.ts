@@ -1,10 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, ViewChild, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
+import { Menu } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
 
@@ -15,6 +16,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './dashboard-header.component.css'
 })
 export class DashboardHeaderComponent {
+  @ViewChild('userMenu') userMenu!: Menu;
+  
   searchValue = signal('');
   userMenuItems: MenuItem[] = [];
 
@@ -41,6 +44,12 @@ export class DashboardHeaderComponent {
         command: () => this.logout()
       }
     ];
+  }
+
+  toggleUserMenu(event: Event): void {
+    if (this.userMenu) {
+      this.userMenu.toggle(event);
+    }
   }
 
   navigateToHome(): void {

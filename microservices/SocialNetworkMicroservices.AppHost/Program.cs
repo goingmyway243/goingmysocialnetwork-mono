@@ -2,7 +2,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var postgresql = builder.AddPostgres("postgresql")
     .WithImage("postgres", "17-alpine")
-    .WithDataVolume("postgresql")
+    .WithDataVolume("aspire_postgresql")
     .WithPgAdmin(containerName: "pgadmin")
     .WithLifetime(ContainerLifetime.Persistent);
 

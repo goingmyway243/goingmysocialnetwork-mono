@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using SocialNetworkMicroservices.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+using SocialNetworkMicroservices.Identity.Enums;
 using SocialNetworkMicroservices.Identity.Models;
-using SocialNetworkMicroservices.Identity.Services;
 
 namespace SocialNetworkMicroservices.Identity.Data;
 
@@ -11,79 +10,32 @@ public static class UserSeeder
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+        var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<ApplicationUser>>();
 
-        // Check if users already exist
-        if (await context.Users.AnyAsync())
+        // Check if admin user already exist
+        if (await context.Users.FindAsync(Guid.Empty) != null)
         {
-            return; // Users already seeded
+            return; // Admin user already seeded
         }
 
-        var users = new List<ApplicationUser>
+        var user = new ApplicationUser
         {
-            new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = "admin",
-                PasswordHash = passwordHasher.HashPassword("admin123"),
-                Email = "admin@socialnetwork.com",
-                FirstName = "Admin",
-                LastName = "User",
-                Roles = new List<string> { "admin", "user" },
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true
-            },
-            new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = "john.doe",
-                PasswordHash = passwordHasher.HashPassword("password123"),
-                Email = "john.doe@example.com",
-                FirstName = "John",
-                LastName = "Doe",
-                Roles = new List<string> { "user" },
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true
-            },
-            new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = "jane.smith",
-                PasswordHash = passwordHasher.HashPassword("password123"),
-                Email = "jane.smith@example.com",
-                FirstName = "Jane",
-                LastName = "Smith",
-                Roles = new List<string> { "user" },
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true
-            },
-            new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = "test",
-                PasswordHash = passwordHasher.HashPassword("password"),
-                Email = "test@example.com",
-                FirstName = "Test",
-                LastName = "User",
-                Roles = new List<string> { "user" },
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true
-            },
-            new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = "moderator",
-                PasswordHash = passwordHasher.HashPassword("mod123"),
-                Email = "moderator@socialnetwork.com",
-                FirstName = "Moderator",
-                LastName = "User",
-                Roles = new List<string> { "moderator", "user" },
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true
-            }
+            Id = Guid.Empty,
+            UserName = "admin",
+            NormalizedUserName = "ADMIN",
+            Email = "admin@socialnetwork.com",
+            NormalizedEmail = "ADMIN@SOCIALNETWORK.COM",
+            FirstName = "Admin",
+            LastName = "User",
+            Bio = "I am the administrator of the social network.",
+            Roles = [UserRole.Admin],
+            IsVerified = true,
+            SecurityStamp = Guid.NewGuid().ToString()
         };
 
-        await context.Users.AddRangeAsync(users);
+        user.PasswordHash = passwordHasher.HashPassword(user, "admin123"); // Hash the password
+
+        await context.Users.AddAsync(user);
         await context.SaveChangesAsync();
     }
 }

@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using SocialNetworkMicroservices.Identity.Data;
+using SocialNetworkMicroservices.Identity.Models;
 using SocialNetworkMicroservices.Identity.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -96,6 +98,8 @@ builder.Services.AddOpenIddict()
                .EnableUserinfoEndpointPassthrough();
 
         options.DisableAccessTokenEncryption();
+
+        options.RegisterScopes("social_api", "email", "profile", "roles", "openid");
     })
     .AddValidation(options =>
     {
@@ -105,8 +109,29 @@ builder.Services.AddOpenIddict()
 
 builder.Services.AddControllers();
 
-// Register services
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+// Register ASP.NET Core Identity services
+builder.Services.AddIdentityCore<ApplicationUser>(options =>
+{
+    // Password settings
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+
+    // User settings
+    options.User.RequireUniqueEmail = true;
+
+    // SignIn settings (optional)
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+})
+    .AddRoles<IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddSignInManager()
+    .AddDefaultTokenProviders();
+
+// Register custom services
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Build the app

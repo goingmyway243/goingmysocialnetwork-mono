@@ -63,16 +63,16 @@ public class AuthorizationController : ControllerBase
             nameType: Claims.Name,
             roleType: Claims.Role);
 
-        identity.AddClaim(Claims.Subject, user.Id);
-        identity.AddClaim(Claims.Name, user.Username);
-        identity.AddClaim(Claims.Email, user.Email);
-        identity.AddClaim("given_name", user.FirstName);
-        identity.AddClaim("family_name", user.LastName);
+        identity.AddClaim(new Claim(Claims.Subject, user.Id.ToString()));
+        identity.AddClaim(new Claim(Claims.Name, user.UserName ?? string.Empty));
+        identity.AddClaim(new Claim(Claims.Email, user.Email ?? string.Empty));
+        identity.AddClaim(new Claim("given_name", user.FirstName));
+        identity.AddClaim(new Claim("family_name", user.LastName));
 
         // Add roles
         foreach (var role in user.Roles)
         {
-            identity.AddClaim(Claims.Role, role);
+            identity.AddClaim(new Claim(Claims.Role, role.ToString()));
         }
 
         // Set scopes
@@ -110,16 +110,16 @@ public class AuthorizationController : ControllerBase
                 nameType: Claims.Name,
                 roleType: Claims.Role);
 
-            identity.AddClaim(Claims.Subject, user.Id);
-            identity.AddClaim(Claims.Name, user.Username);
-            identity.AddClaim(Claims.Email, user.Email);
-            identity.AddClaim("given_name", user.FirstName);
-            identity.AddClaim("family_name", user.LastName);
-            
+            identity.AddClaim(new Claim(Claims.Subject, user.Id.ToString()));
+            identity.AddClaim(new Claim(Claims.Name, user.UserName ?? string.Empty));
+            identity.AddClaim(new Claim(Claims.Email, user.Email ?? string.Empty));
+            identity.AddClaim(new Claim("given_name", user.FirstName));
+            identity.AddClaim(new Claim("family_name", user.LastName));
+
             // Add roles
             foreach (var role in user.Roles)
             {
-                identity.AddClaim(Claims.Role, role);
+                identity.AddClaim(new Claim(Claims.Role, role.ToString()));
             }
 
             // Set scopes
@@ -139,8 +139,8 @@ public class AuthorizationController : ControllerBase
                 nameType: Claims.Name,
                 roleType: Claims.Role);
 
-            identity.AddClaim(Claims.Subject, request.ClientId ?? "client_app");
-            identity.AddClaim(Claims.Name, request.ClientId ?? "client_app");
+            identity.AddClaim(new Claim(Claims.Subject, request.ClientId ?? "client_app"));
+            identity.AddClaim(new Claim(Claims.Name, request.ClientId ?? "client_app"));
 
             identity.SetScopes(request.GetScopes());
             identity.SetDestinations(GetDestinations);

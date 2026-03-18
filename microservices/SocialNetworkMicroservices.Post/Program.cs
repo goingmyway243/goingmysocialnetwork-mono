@@ -40,7 +40,6 @@ builder.Services.AddOpenIddict()
     .AddValidation(options =>
     {
         options.SetIssuer(builder.Configuration["OpenIddict:Issuer"]!);
-        options.AddAudiences("post_api");
         options.UseSystemNetHttp();
         options.UseAspNetCore();
     });

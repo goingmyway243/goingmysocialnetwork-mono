@@ -7,6 +7,7 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../services/auth.service';
+import { UserApiService } from '../../services/user-api.service';
 
 @Component({
   selector: 'app-signup',
@@ -22,10 +23,12 @@ export class SignupComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private userApiService: UserApiService,
     private router: Router
   ) {
     this.signupForm = this.fb.group({
+      firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
@@ -54,11 +57,11 @@ export class SignupComponent {
       return;
     }
 
-    const { username, email, password } = this.signupForm.value;
+    const { firstName, lastName, username, email, password } = this.signupForm.value;
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    this.authService.signup(username, email, password).subscribe({
+    this.userApiService.signUp({ username, email, password, firstName, lastName }).subscribe({
       next: () => {
         this.isLoading.set(false);
         // Redirect to login after successful signup
@@ -75,6 +78,14 @@ export class SignupComponent {
 
   navigateToLogin(): void {
     this.router.navigate(['/login']);
+  }
+
+  get firstName() {
+    return this.signupForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.signupForm.get('lastName');
   }
 
   get username() {

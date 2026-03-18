@@ -18,6 +18,68 @@
     }
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+      <!-- First Name field -->
+      <div class="form-group">
+        <label for="firstName" class="form-label">First Name</label>
+        <div class="input-wrapper">
+          <i class="pi pi-user input-icon"></i>
+          <input
+            pInputText
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            class="form-input w-full"
+            placeholder="Enter your first name"
+            [class.ng-invalid]="firstName?.invalid && firstName?.touched"
+            [class.ng-dirty]="firstName?.touched"
+          />
+        </div>
+        @if (firstName?.invalid && firstName?.touched) {
+          <span class="error-message">
+            @if (firstName?.errors?.['required']) {
+              <span>First name is required</span>
+            }
+            @if (firstName?.errors?.['minlength']) {
+              <span>First name must be at least 1 character</span>
+            }
+            @if (firstName?.errors?.['maxlength']) {
+              <span>First name cannot exceed 50 characters</span>
+            }
+          </span>
+        }
+      </div>
+
+      <!-- Last Name field -->
+      <div class="form-group">
+        <label for="lastName" class="form-label">Last Name</label>
+        <div class="input-wrapper">
+          <i class="pi pi-user input-icon"></i>
+          <input
+            pInputText
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            class="form-input w-full"
+            placeholder="Enter your last name"
+            [class.ng-invalid]="lastName?.invalid && lastName?.touched"
+            [class.ng-dirty]="lastName?.touched"
+          />
+        </div>
+        @if (lastName?.invalid && lastName?.touched) {
+          <span class="error-message">
+            @if (lastName?.errors?.['required']) {
+              <span>Last name is required</span>
+            }
+            @if (lastName?.errors?.['minlength']) {
+              <span>Last name must be at least 1 character</span>
+            }
+            @if (lastName?.errors?.['maxlength']) {
+              <span>Last name cannot exceed 50 characters</span>
+            }
+          </span>
+        }
+      </div>
+
       <!-- Username field -->
       <div class="form-group">
         <label for="username" class="form-label">Username</label>

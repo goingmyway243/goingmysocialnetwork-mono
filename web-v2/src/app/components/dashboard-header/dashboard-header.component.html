@@ -38,8 +38,8 @@
       [text]="true" 
       [rounded]="true"
       styleClass="icon-btn"
-      (onClick)="menu.toggle($event)"></p-button>
+      (onClick)="toggleUserMenu($event)"></p-button>
     
-    <p-menu #menu [model]="userMenuItems" [popup]="true"></p-menu>
+    <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
   </div>
 </div>

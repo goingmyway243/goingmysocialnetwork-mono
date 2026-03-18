@@ -65,4 +65,6 @@ When the user says these terms, go directly to the right location — no searchi
 
 ---
 
-**Note:** When in doubt, prioritize SOLID principles and clear, consistent naming above all else.
+**Note:** 
+- When in doubt, prioritize SOLID principles and clear, consistent naming above all else.
+- Always remember to check the using statement after refactor/generate code before building app

@@ -41,7 +41,7 @@
           <p-button label="Create Post" icon="pi pi-plus" styleClass="create-btn"></p-button>
         </div>
       } @else {
-        @for (post of posts(); track post.id) {
+        @for (post of posts() || []; track post.id) {
           <p-card styleClass="post-card">
             <div class="post-header">
               <div class="author-avatar">
