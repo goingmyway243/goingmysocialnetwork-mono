@@ -1,9 +1,10 @@
-# GoingMySocialNetwork
+# GoingMySocialNetwork-Mono
 
 This project is a social networking application. Follow the instructions below to set up and run the application using Docker Compose.
 
 ⚠️ Notes:
-Certain functions are not yet implemented.
+- Certain functions are not yet implemented.
+- This is a demo project with monolithic architecture and <b>is not maintained anymore.</b> For a more scalable and maintainable version, please check out the microservices architecture version of this project at [GoingMySocialNetwork](https://github.com/goingmyway243/goingmysocialnetwork)
 
 ## You can quickly access the demo at:
 [https://goingmysocial.azurewebsites.net/](https://goingmysocial.azurewebsites.net/)
